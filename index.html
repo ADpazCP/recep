@@ -3,65 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel de Visitantes</title>
+<title>Relatório de Visitantes</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-    :root {
-        --cor-laranja: #f97316;
-        --cor-cinza-claro: #f1f5f9;
-        --cor-texto: #334155;
+    :root { 
+        --laranja: #f97316;
+        --laranja-suave: #fef3e8;
+        --verde: #10b981;
+        --verde-suave: #ecfdf5;
+        --amarelo: #f59e0b;
+        --amarelo-suave: #fffbeb;
+        --vermelho: #ef4444;
+        --vermelho-suave: #fef2f2;
+        --cinza-claro: #f8fafc;
+        --cinza-borda: #e2e8f0;
     }
-
-    body { background-color: #f8fafc; font-family: 'Segoe UI', sans-serif; color: var(--cor-texto); }
     
-    .container-app { max-width: 480px; margin: 20px auto; padding: 0 15px; }
-
-    /* Logo */
-    .logo-header { text-align: center; margin-bottom: 15px; }
-    .logo-header img { width: 150px; height: 40px; object-fit: contain; }
-
-    /* Compactação */
-    .visitor-card {
-        background: #fff;
-        padding: 12px 15px; /* Espaçamento interno reduzido */
-        margin-bottom: 8px; /* Distância entre cards reduzida */
-        border-radius: 10px;
-        border-left: 5px solid var(--cor-laranja); /* Toque laranja */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        cursor: pointer;
+    body { 
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+        min-height: 100vh;
+        padding: 20px;
     }
-
-    .card-nome { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
     
-    .form-control, .form-select {
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 0.95rem;
+    .container-app { 
+        max-width: 450px; 
+        margin: 0 auto; 
+        background: #ffffff; 
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
     }
-
-    .info-box {
-        background: var(--cor-cinza-claro);
-        padding: 8px 12px;
-        border-radius: 8px;
+    
+    .header-relatorio { 
+        background: linear-gradient(135deg, #ffffff 0%, #fefaf7 100%);
+        padding: 25px 20px 20px 20px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 12px; 
+        border-bottom: 2px solid rgba(249, 115, 22, 0.15);
+    }
+    
+    .header-relatorio img { 
+        width: 45px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    }
+    
+    .titulo-adpaz { 
+        font-weight: 600; 
+        color: #475569;
+        font-size: 1.1rem;
+        letter-spacing: -0.3px;
+    }
+    
+    .titulo-adpaz span {
+        color: var(--laranja);
+        font-weight: 700;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
+    h5 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 20px;
+        letter-spacing: -0.3px;
+    }
+    
+    .form-control, .form-select { 
+        border: 1.5px solid var(--cinza-borda); 
+        border-radius: 12px; 
+        padding: 8px 12px; 
+        font-size: 0.85rem; 
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+        background: white;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--laranja);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    }
+    
+    .btn-atualizar { 
+        background: var(--laranja); 
+        color: white; 
+        border: none; 
+        padding: 8px 24px; 
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        font-size: 0.85rem;
+    }
+    
+    .btn-atualizar:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        background: #ea580c;
+    }
+    
+    .visitor-card { 
+        background: #fff; 
+        padding: 14px; 
+        margin-bottom: 12px; 
+        border: 1.5px solid var(--cinza-borda);
+        border-radius: 16px; 
+        cursor: pointer; 
+        transition: all 0.25s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    
+    .visitor-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        border-color: var(--laranja);
+    }
+    
+    .card-nome { 
+        font-size: 1rem; 
+        font-weight: 700; 
+        color: #0f172a;
         margin-bottom: 6px;
-        font-size: 0.9rem;
     }
-
-    .btn-dark { background: var(--cor-laranja); border: none; border-radius: 8px; }
-    .btn-dark:hover { background: #ea580c; }
-
-    .spinner-border { color: var(--cor-laranja); }
+    
+    .card-status { 
+        font-weight: 600; 
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+    
+    /* Cores para os status */
+    .status-evangelico {
+        background: var(--verde-suave);
+        color: var(--verde);
+    }
+    
+    .status-sem-congregacao {
+        background: var(--amarelo-suave);
+        color: var(--amarelo);
+    }
+    
+    .status-afastado {
+        background: var(--vermelho-suave);
+        color: var(--vermelho);
+    }
+    
+    .status-nao-evangelico {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+    
+    .status-outro {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+    
+    .card-meta { 
+        font-size: 0.8rem; 
+        color: #64748b;
+        margin-top: 4px;
+    }
+    
+    .info-box { 
+        background: var(--cinza-claro); 
+        padding: 10px 12px; 
+        border-radius: 12px; 
+        margin-top: 8px; 
+        font-size: 0.85rem;
+        border: 1px solid var(--cinza-borda);
+        transition: all 0.2s ease;
+    }
+    
+    .info-box:hover {
+        background: #f8fafc;
+        transform: translateX(2px);
+    }
+    
+    .label-data { 
+        font-size: 0.7rem; 
+        color: #64748b; 
+        margin-bottom: 4px; 
+        display: block;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .filtro-section {
+        margin-bottom: 12px;
+    }
+    
+    .total-registros {
+        background: var(--cinza-claro);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+    
+    .modal-content {
+        border-radius: 24px;
+        border: none;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .modal-header-custom {
+        background: linear-gradient(135deg, var(--laranja-suave) 0%, #fff 100%);
+        border-radius: 24px 24px 0 0;
+        padding: 20px;
+    }
+    
+    /* Scrollbar suave */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--cinza-claro);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--laranja);
+        border-radius: 10px;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .visitor-card {
+        animation: fadeIn 0.3s ease-out;
+    }
 </style>
 </head>
 <body>
 
 <div class="container-app">
-    <div class="logo-header">
+    <div class="header-relatorio">
         <img src="logo.png" alt="Logo">
+        <div class="titulo-adpaz">igreja <span>adpaz</span> Candelária</div>
     </div>
+    
+    <div class="main-content">
+        <h5 class="text-center">Relatório de visitantes</h5>
 
-    <div class="mb-2">
-        <input type="text" id="filtroNome" class="form-control mb-2" placeholder="Buscar..." onkeyup="aplicarFiltro()">
         <select id="filtroStatus" class="form-select" onchange="aplicarFiltro()">
             <option value="">Todas as situações</option>
             <option value="Evangélico">Evangélico</option>
@@ -69,83 +269,172 @@
             <option value="Afastado(a)">Afastado(a)</option>
             <option value="Sem congregação">Sem congregação</option>
         </select>
-    </div>
+        
+        <input type="text" id="filtroNome" class="form-control" placeholder="🔍 Buscar por nome..." onkeyup="aplicarFiltro()">
 
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <small class="fw-bold">Total: <span id="contador">0</span></small>
-        <button onclick="buscarDados()" class="btn btn-dark btn-sm">Atualizar</button>
-    </div>
+        <!-- Filtros de data -->
+        <div class="filtro-section">
+            <label class="label-data">📅 Data inicial</label>
+            <input type="date" id="filtroDataInicial" class="form-control" onchange="aplicarFiltro()">
+        </div>
+        
+        <div class="filtro-section">
+            <label class="label-data">📅 Data final</label>
+            <input type="date" id="filtroDataFinal" class="form-control" onchange="aplicarFiltro()">
+        </div>
 
-    <div id="loading" class="text-center mt-3"><div class="spinner-border"></div></div>
-    <div id="listaVisitantes"></div>
+        <div class="d-flex justify-content-between align-items-center my-3">
+            <button onclick="buscarDados()" class="btn-atualizar">⟳ Atualizar</button>
+            <div class="total-registros">
+                📊 <span class="fw-bold text-danger" id="contador">0</span> registros
+            </div>
+        </div>
+
+        <div id="listaVisitantes"></div>
+    </div>
 </div>
 
-<div class="modal fade" id="detalhesModal">
+<div class="modal fade" id="detalhesModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-3">
-            <h5 id="detNome" class="fw-bold text-center mb-3" style="color: var(--cor-laranja);"></h5>
-            <div class="info-box"><b>Telefone:</b> <span id="detTel"></span></div>
-            <div class="info-box"><b>Situação:</b> <span id="detStatus"></span></div>
-            <div class="info-box"><b>Convidado:</b> <span id="detOutro"></span></div>
-            <div class="info-box"><b>Mensagem:</b> <span id="detMsg"></span></div>
-            <div class="info-box"><b>Data:</b> <span id="detData"></span></div>
+        <div class="modal-content">
+            <div class="modal-header-custom">
+                <h5 id="detNome" class="fw-bold text-center mb-0" style="color: var(--laranja);"></h5>
+            </div>
+            <div class="p-4">
+                <div class="info-box"><b>📞 Telefone:</b> <span id="detTel"></span></div>
+                <div class="info-box"><b>🏷️ Situação:</b> <span id="detStatus"></span></div>
+                <div class="info-box"><b>👥 Convidado por:</b> <span id="detOutro"></span></div>
+                <div class="info-box"><b>💬 Mensagem:</b> <span id="detMsg"></span></div>
+                <div class="info-box"><b>📅 Data:</b> <span id="detData"></span></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // [SUA LÓGICA PERMANECE A MESMA]
     const API_URL = "https://script.google.com/macros/s/AKfycbyrx7uJhNfLnoERD5qLNNwKu2QAmGQVpFNFqJoOIHpygafv7LVmJlL9ZQWzpvI9KCX0/exec";
     let dadosLocais = [], dadosFiltrados = [];
-    const modal = new bootstrap.Modal(document.getElementById('detalhesModal'));
+    
+    const modalElement = document.getElementById('detalhesModal');
+    const myModal = new bootstrap.Modal(modalElement);
+
+    function getStatusLabel(s) {
+        s = String(s).toLowerCase();
+        if (s === "sim") return "Evangélico";
+        if (s.includes("nao") || s.includes("não")) return "Não Evangélico";
+        if (s.includes("afastado")) return "Afastado(a)";
+        if (s.includes("sem")) return "Sem congregação";
+        return s || "Outro";
+    }
+
+    function getStatusClass(status) {
+        switch(status) {
+            case "Evangélico": return "status-evangelico";
+            case "Sem congregação": return "status-sem-congregacao";
+            case "Afastado(a)": return "status-afastado";
+            default: return "status-outro";
+        }
+    }
+
+    function formatarData(dataStr) {
+        if (!dataStr) return "---";
+        let d = new Date(dataStr);
+        if (isNaN(d)) return dataStr;
+        return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear())}`;
+    }
+
+    function converterParaData(dataStr) {
+        if (!dataStr) return null;
+        let d = new Date(dataStr);
+        if (isNaN(d)) return null;
+        return d;
+    }
 
     async function buscarDados() {
-        document.getElementById('loading').style.display = 'block';
         try {
-            const r = await fetch(API_URL, { redirect: 'follow' });
+            const r = await fetch(API_URL);
             dadosLocais = (await r.json()).reverse();
             dadosFiltrados = dadosLocais;
             renderLista();
-        } catch(e) { console.error(e); }
-        document.getElementById('loading').style.display = 'none';
+        } catch(e) { 
+            alert("Erro ao conectar com a planilha.");
+            console.error(e);
+        }
+    }
+
+    function aplicarFiltro() {
+        let nomeBusca = document.getElementById('filtroNome').value.toLowerCase();
+        let statusFiltro = document.getElementById('filtroStatus').value;
+        let dataInicial = document.getElementById('filtroDataInicial').value;
+        let dataFinal = document.getElementById('filtroDataFinal').value;
+        
+        dadosFiltrados = dadosLocais.filter(item => {
+            let passaNome = item.nome.toLowerCase().includes(nomeBusca);
+            let label = getStatusLabel(item.evangelico);
+            let passaStatus = (!statusFiltro || label === statusFiltro);
+            
+            let passaData = true;
+            if (dataInicial || dataFinal) {
+                let dataItem = converterParaData(item.data);
+                if (dataItem) {
+                    if (dataInicial) {
+                        let dataIni = new Date(dataInicial);
+                        if (dataItem < dataIni) passaData = false;
+                    }
+                    if (dataFinal && passaData) {
+                        let dataFim = new Date(dataFinal);
+                        dataFim.setHours(23, 59, 59);
+                        if (dataItem > dataFim) passaData = false;
+                    }
+                } else {
+                    passaData = false;
+                }
+            }
+            
+            return passaNome && passaStatus && passaData;
+        });
+        
+        renderLista();
     }
 
     function renderLista() {
         let lista = document.getElementById('listaVisitantes');
         lista.innerHTML = "";
         document.getElementById('contador').innerText = dadosFiltrados.length;
+        
         dadosFiltrados.forEach((item, index) => {
+            let label = getStatusLabel(item.evangelico);
+            let statusClass = getStatusClass(label);
             let card = document.createElement("div");
             card.className = "visitor-card";
-            card.onclick = () => verDetalhes(index);
-            card.innerHTML = `<div class="card-nome">${item.nome}</div><small>${item.telefone || '---'}</small>`;
+            card.setAttribute("onclick", `verDetalhes(${index})`);
+            card.innerHTML = `
+                <div class="card-nome">${item.nome}</div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="card-status ${statusClass}">${label}</span>
+                    <span class="card-meta">📞 ${item.telefone || '---'}</span>
+                </div>
+                <div class="card-meta">📅 ${formatarData(item.data)}</div>
+            `;
             lista.appendChild(card);
         });
     }
 
-    function aplicarFiltro() {
-        let n = document.getElementById('filtroNome').value.toLowerCase();
-        let sF = document.getElementById('filtroStatus').value;
-        dadosFiltrados = dadosLocais.filter(i => {
-            let s = (i.evangelico || "").toLowerCase();
-            let c = s === "sim" ? "Evangélico" : (s.includes("nao") ? "Não Evangélico" : (s.includes("afastado") ? "Afastado(a)" : "Sem congregação"));
-            return i.nome.toLowerCase().includes(n) && (!sF || c === sF);
-        });
-        renderLista();
-    }
-
     function verDetalhes(idx) {
         let d = dadosFiltrados[idx];
+        let label = getStatusLabel(d.evangelico);
+        let statusClass = getStatusClass(label);
+        
         document.getElementById('detNome').innerText = d.nome;
         document.getElementById('detTel').innerText = d.telefone || '---';
-        document.getElementById('detStatus').innerText = d.evangelico || '---';
+        document.getElementById('detStatus').innerHTML = `<span class="${statusClass}" style="padding: 2px 8px; border-radius: 20px; display: inline-block;">${label}</span>`;
         document.getElementById('detOutro').innerText = d.outro || '---';
         document.getElementById('detMsg').innerText = d.mensagem || '---';
-        document.getElementById('detData').innerText = d.data || '---';
-        modal.show();
+        document.getElementById('detData').innerText = formatarData(d.data);
+        myModal.show();
     }
-
+    
     window.onload = buscarDados;
 </script>
 </body>
