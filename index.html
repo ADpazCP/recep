@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relatório de Visitantes</title>
+<title>Visitantes | Igreja ADPaz Cidade Praia</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
     :root { 
@@ -30,25 +31,37 @@
         max-width: 450px; 
         margin: 0 auto; 
         background: #ffffff; 
-        border-radius: 20px;
+        border-radius: 12px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
         overflow: hidden;
-        backdrop-filter: blur(10px);
     }
     
     .header-relatorio { 
         background: linear-gradient(135deg, #ffffff 0%, #fefaf7 100%);
-        padding: 25px 20px 20px 20px;
+        padding: 20px 16px 16px 16px;
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        gap: 12px; 
+        gap: 10px; 
         border-bottom: 2px solid rgba(249, 115, 22, 0.15);
+        flex-wrap: wrap;
     }
     
-    .header-relatorio img { 
-        width: 45px;
+    /* LOGO QUADRADA 150x150px */
+    .logo-quadrada {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
         filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+        display: block;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 4px;
+    }
+    
+    .header-relatorio {
+        flex-direction: column;
+        text-align: center;
     }
     
     .titulo-adpaz { 
@@ -56,6 +69,7 @@
         color: #475569;
         font-size: 1.1rem;
         letter-spacing: -0.3px;
+        margin-top: 4px;
     }
     
     .titulo-adpaz span {
@@ -77,7 +91,7 @@
     
     .form-control, .form-select { 
         border: 1.5px solid var(--cinza-borda); 
-        border-radius: 12px; 
+        border-radius: 8px;
         padding: 8px 12px; 
         font-size: 0.85rem; 
         margin-bottom: 8px;
@@ -91,21 +105,62 @@
         box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
     }
     
-    .btn-atualizar { 
+    /* Container dos botões lado a lado */
+    .botoes-linha {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+    
+    .btn-grupo {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+    }
+    
+    /* Botões mais FINOS - padding vertical reduzido, mesma cor e estilo refinado */
+    .btn-atualizar, .btn-limpar { 
         background: var(--laranja); 
         color: white; 
         border: none; 
-        padding: 8px 24px; 
+        padding: 5px 16px;   /* reduzido de 8px para 5px (mais fino) */
         font-weight: 600;
-        border-radius: 12px;
+        border-radius: 8px;
         transition: all 0.2s ease;
-        font-size: 0.85rem;
+        font-size: 0.8rem;    /* levemente menor para equilibrar */
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex: 1;
+        letter-spacing: 0.3px;
+        line-height: 1.4;
     }
     
-    .btn-atualizar:hover {
+    .btn-limpar {
+        background: var(--laranja);
+    }
+    
+    .btn-atualizar:hover, .btn-limpar:hover {
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
         background: #ea580c;
+    }
+    
+    .btn-atualizar:active, .btn-limpar:active {
+        transform: translateY(0);
+    }
+    
+    .total-registros {
+        background: var(--cinza-claro);
+        padding: 5px 12px;    /* ajuste fino */
+        border-radius: 20px;
+        font-size: 0.78rem;
+        white-space: nowrap;
+        font-weight: 500;
     }
     
     .visitor-card { 
@@ -113,7 +168,7 @@
         padding: 14px; 
         margin-bottom: 12px; 
         border: 1.5px solid var(--cinza-borda);
-        border-radius: 16px; 
+        border-radius: 10px;
         cursor: pointer; 
         transition: all 0.25s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
@@ -175,7 +230,7 @@
     .info-box { 
         background: var(--cinza-claro); 
         padding: 10px 12px; 
-        border-radius: 12px; 
+        border-radius: 8px;
         margin-top: 8px; 
         font-size: 0.85rem;
         border: 1px solid var(--cinza-borda);
@@ -201,23 +256,16 @@
         margin-bottom: 12px;
     }
     
-    .total-registros {
-        background: var(--cinza-claro);
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-    }
-    
     .modal-content {
-        border-radius: 24px;
+        border-radius: 12px;
         border: none;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
     
     .modal-header-custom {
         background: linear-gradient(135deg, var(--laranja-suave) 0%, #fff 100%);
-        border-radius: 24px 24px 0 0;
-        padding: 20px;
+        border-radius: 12px 12px 0 0;
+        padding: 18px;
     }
     
     /* Scrollbar suave */
@@ -249,14 +297,56 @@
     .visitor-card {
         animation: fadeIn 0.3s ease-out;
     }
+    
+    /* Ajuste responsivo para dispositivos muito pequenos */
+    @media (max-width: 480px) {
+        .logo-quadrada {
+            width: 120px;
+            height: 120px;
+        }
+        .header-relatorio {
+            padding: 16px 12px 12px 12px;
+        }
+        .titulo-adpaz {
+            font-size: 1rem;
+        }
+        .main-content {
+            padding: 16px;
+        }
+        .btn-atualizar, .btn-limpar {
+            padding: 4px 12px;
+            font-size: 0.75rem;
+        }
+        .total-registros {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+        }
+    }
+    
+    .logo-wrapper {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+    }
+    
+    /* estado vazio */
+    .empty-state {
+        text-align: center;
+        padding: 32px 16px;
+        background: var(--cinza-claro);
+        border-radius: 10px;
+        color: #64748b;
+    }
 </style>
 </head>
 <body>
 
 <div class="container-app">
     <div class="header-relatorio">
-        <img src="logo.png" alt="Logo">
-        <div class="titulo-adpaz">igreja <span>adpaz</span> Candelária</div>
+        <!-- LOGO 150x150px quadrada -->
+        <img src="logo.png" alt="Logo Igreja ADPaz" class="logo-quadrada" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x150?text=ADPaz';">
+        <div class="titulo-adpaz">igreja <span>adpaz</span> Cidade Praia</div>
     </div>
     
     <div class="main-content">
@@ -283,8 +373,16 @@
             <input type="date" id="filtroDataFinal" class="form-control" onchange="aplicarFiltro()">
         </div>
 
-        <div class="d-flex justify-content-between align-items-center my-3">
-            <button onclick="buscarDados()" class="btn-atualizar">⟳ Atualizar</button>
+        <!-- LINHA COM DOIS BOTÕES: ATUALIZAR E LIMPAR (mais finos, label "Limpar") -->
+        <div class="botoes-linha">
+            <div class="btn-grupo">
+                <button onclick="buscarDados()" class="btn-atualizar">
+                    ⟳ Atualizar
+                </button>
+                <button onclick="limparFiltros()" class="btn-limpar">
+                    🧹 Limpar
+                </button>
+            </div>
             <div class="total-registros">
                 📊 <span class="fw-bold text-danger" id="contador">0</span> registros
             </div>
@@ -320,12 +418,14 @@
     const myModal = new bootstrap.Modal(modalElement);
 
     function getStatusLabel(s) {
+        if (s === undefined || s === null) return "Outro";
         s = String(s).toLowerCase();
         if (s === "sim") return "Evangélico";
         if (s.includes("nao") || s.includes("não")) return "Não Evangélico";
         if (s.includes("afastado")) return "Afastado(a)";
         if (s.includes("sem")) return "Sem congregação";
-        return s || "Outro";
+        if (s === "evangélico") return "Evangélico";
+        return s.charAt(0).toUpperCase() + s.slice(1) || "Outro";
     }
 
     function getStatusClass(status) {
@@ -340,27 +440,43 @@
     function formatarData(dataStr) {
         if (!dataStr) return "---";
         let d = new Date(dataStr);
-        if (isNaN(d)) return dataStr;
+        if (isNaN(d.getTime())) return dataStr;
         return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear())}`;
     }
 
     function converterParaData(dataStr) {
         if (!dataStr) return null;
         let d = new Date(dataStr);
-        if (isNaN(d)) return null;
-        return d;
+        return isNaN(d.getTime()) ? null : d;
     }
 
     async function buscarDados() {
         try {
             const r = await fetch(API_URL);
-            dadosLocais = (await r.json()).reverse();
-            dadosFiltrados = dadosLocais;
+            const dadosRaw = await r.json();
+            dadosLocais = Array.isArray(dadosRaw) ? dadosRaw.reverse() : [];
+            dadosFiltrados = [...dadosLocais];
             renderLista();
         } catch(e) { 
-            alert("Erro ao conectar com a planilha.");
+            alert("Erro ao conectar com a planilha. Verifique sua conexão.");
             console.error(e);
+            dadosLocais = [];
+            dadosFiltrados = [];
+            renderLista();
         }
+    }
+    
+    // FUNÇÃO PARA LIMPAR TODOS OS FILTROS (label "Limpar")
+    function limparFiltros() {
+        // Limpa os campos de filtro
+        document.getElementById('filtroStatus').value = "";
+        document.getElementById('filtroNome').value = "";
+        document.getElementById('filtroDataInicial').value = "";
+        document.getElementById('filtroDataFinal').value = "";
+        
+        // Restaura os dados filtrados para todos os dados locais
+        dadosFiltrados = [...dadosLocais];
+        renderLista();
     }
 
     function aplicarFiltro() {
@@ -370,8 +486,11 @@
         let dataFinal = document.getElementById('filtroDataFinal').value;
         
         dadosFiltrados = dadosLocais.filter(item => {
-            let passaNome = item.nome.toLowerCase().includes(nomeBusca);
-            let label = getStatusLabel(item.evangelico);
+            let nomeItem = item.nome || "";
+            let passaNome = nomeItem.toLowerCase().includes(nomeBusca);
+            
+            let evangelicoRaw = item.evangelico !== undefined ? item.evangelico : "";
+            let label = getStatusLabel(evangelicoRaw);
             let passaStatus = (!statusFiltro || label === statusFiltro);
             
             let passaData = true;
@@ -380,6 +499,7 @@
                 if (dataItem) {
                     if (dataInicial) {
                         let dataIni = new Date(dataInicial);
+                        dataIni.setHours(0, 0, 0, 0);
                         if (dataItem < dataIni) passaData = false;
                     }
                     if (dataFinal && passaData) {
@@ -403,39 +523,86 @@
         lista.innerHTML = "";
         document.getElementById('contador').innerText = dadosFiltrados.length;
         
-        dadosFiltrados.forEach((item, index) => {
+        if (dadosFiltrados.length === 0) {
+            lista.innerHTML = `<div class="empty-state">
+                                    <span>📭 Nenhum visitante encontrado com os filtros atuais.</span>
+                                </div>`;
+            return;
+        }
+        
+        dadosFiltrados.forEach((item) => {
             let label = getStatusLabel(item.evangelico);
             let statusClass = getStatusClass(label);
+            let nomeExib = item.nome || "Nome não informado";
+            let telefoneExib = item.telefone || "---";
+            let dataFormat = formatarData(item.data);
+            
             let card = document.createElement("div");
             card.className = "visitor-card";
-            card.setAttribute("onclick", `verDetalhes(${index})`);
+            card.addEventListener("click", function() {
+                verDetalhesPorItem(item);
+            });
+            
             card.innerHTML = `
-                <div class="card-nome">${item.nome}</div>
+                <div class="card-nome">${escapeHtml(nomeExib)}</div>
                 <div class="d-flex justify-content-between align-items-center">
-                    <span class="card-status ${statusClass}">${label}</span>
-                    <span class="card-meta">📞 ${item.telefone || '---'}</span>
+                    <span class="card-status ${statusClass}">${escapeHtml(label)}</span>
+                    <span class="card-meta">📞 ${escapeHtml(telefoneExib)}</span>
                 </div>
-                <div class="card-meta">📅 ${formatarData(item.data)}</div>
+                <div class="card-meta">📅 ${dataFormat}</div>
             `;
             lista.appendChild(card);
         });
     }
-
-    function verDetalhes(idx) {
-        let d = dadosFiltrados[idx];
-        let label = getStatusLabel(d.evangelico);
+    
+    // Função auxiliar para evitar XSS básico
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Exibe detalhes baseado no objeto diretamente
+    function verDetalhesPorItem(item) {
+        if (!item) return;
+        let label = getStatusLabel(item.evangelico);
         let statusClass = getStatusClass(label);
         
-        document.getElementById('detNome').innerText = d.nome;
-        document.getElementById('detTel').innerText = d.telefone || '---';
-        document.getElementById('detStatus').innerHTML = `<span class="${statusClass}" style="padding: 2px 8px; border-radius: 20px; display: inline-block;">${label}</span>`;
-        document.getElementById('detOutro').innerText = d.outro || '---';
-        document.getElementById('detMsg').innerText = d.mensagem || '---';
-        document.getElementById('detData').innerText = formatarData(d.data);
+        let nomeDet = item.nome || "Visitante";
+        let telefoneDet = item.telefone || "---";
+        let convidadoDet = item.outro || "---";
+        let mensagemDet = item.mensagem || "---";
+        let dataDet = formatarData(item.data);
+        
+        document.getElementById('detNome').innerText = nomeDet;
+        document.getElementById('detTel').innerText = telefoneDet;
+        document.getElementById('detStatus').innerHTML = `<span class="${statusClass}" style="padding: 2px 8px; border-radius: 20px; display: inline-block;">${escapeHtml(label)}</span>`;
+        document.getElementById('detOutro').innerText = convidadoDet;
+        document.getElementById('detMsg').innerText = mensagemDet;
+        document.getElementById('detData').innerText = dataDet;
         myModal.show();
     }
     
-    window.onload = buscarDados;
+    window.onload = () => {
+        buscarDados();
+        // listeners para filtros automáticos
+        const inputNome = document.getElementById('filtroNome');
+        if (inputNome) {
+            inputNome.addEventListener('keyup', aplicarFiltro);
+        }
+        const selectStatus = document.getElementById('filtroStatus');
+        if(selectStatus) selectStatus.addEventListener('change', aplicarFiltro);
+        
+        const dataIni = document.getElementById('filtroDataInicial');
+        const dataFim = document.getElementById('filtroDataFinal');
+        if(dataIni) dataIni.addEventListener('change', aplicarFiltro);
+        if(dataFim) dataFim.addEventListener('change', aplicarFiltro);
+    };
 </script>
 </body>
 </html>
+```
